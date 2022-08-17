@@ -32,6 +32,9 @@ folder_light_curves = "/data/seismo/vasilyev/flares/results/solar_like_stars/std
 
 list_of_flare_candidates = np.load("/data/seismo/vasilyev/flares/results/solar_like_stars/flare_candidates_light_curve_analysis.npy", allow_pickle=True).item()
 
+
+
+
 import sys
 star_star_number = int(sys.argv[1])
 
@@ -41,12 +44,6 @@ quarter = int(list_of_flare_candidates["q"][star_star_number])
 time_1 = list_of_flare_candidates["time"][star_star_number]
 cadence_1 = list_of_flare_candidates["cad"][star_star_number]
 
-time_2 =  list_of_flare_candidates["time_next"][star_star_number]
-cadence_2 = list_of_flare_candidates["cad_next"][star_star_number]
-
-
-
-
 
 
 def loadGAIA(tpf: TargetPixelFile, kik_id: int, folder_to_load_gaia: str) -> [np.ndarray, np.ndarray]:
@@ -54,8 +51,8 @@ def loadGAIA(tpf: TargetPixelFile, kik_id: int, folder_to_load_gaia: str) -> [np
     data = pandas.read_csv(folder_to_load_gaia+"kic_id"+str(kik_id)+".csv")
     radecs_2015 = np.vstack([data['RA_ICRS'], data['DE_ICRS']]).T
     ra_dec_pix_2015 = tpf.wcs.all_world2pix(radecs_2015, 0)
-    ra_dec_pix_2015[:,0] = ra_dec_pix_2015[:, 0] + tpf.column
-    ra_dec_pix_2015[:,1] = ra_dec_pix_2015[:, 1] + tpf.row
+    ra_dec_pix_2015[:, 0] = ra_dec_pix_2015[:, 0] + tpf.column
+    ra_dec_pix_2015[:, 1] = ra_dec_pix_2015[:, 1] + tpf.row
     return ra_dec_pix_2015, data
 
 
@@ -64,8 +61,8 @@ def loadGAIA(tpf: TargetPixelFile, kik_id: int, folder_to_load_gaia: str) -> [np
 class InputForFitting:
     flare_parameters: FlareParameters
     half_window_around_flare: float = 0.3
-    n_steps: int = 1200#0
-    n_discard: int = 800#0
+    n_steps: int = 12000
+    n_discard: int = 8000
 
 
 class Processing:
@@ -82,6 +79,7 @@ class Processing:
                                         cadences_before_and_after_the_flare=tpfs.cadence_around_flare_without_flare,
                                         cadence_flare=tpfs.cadence_flare,
                                         cadences=tpfs.cadences))
+
         print("image_with_flare.all_images:", image_with_flare.all_images.shape)
         print("tpfs.target_pixel_data.pipeline_mask:", tpfs.target_pixel_data.pipeline_mask,
               np.sqrt(np.sum(tpfs.target_pixel_data.pipeline_mask)/np.pi)/5)

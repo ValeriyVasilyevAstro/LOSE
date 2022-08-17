@@ -51,7 +51,7 @@ class ConfidenceEllipceEstimation:
     def _eigsorted(self, cov: np.ndarray) -> [np.ndarray, np.ndarray]:
         vals, vecs = np.linalg.eigh(cov)
         order = vals.argsort()[::-1]
-        return vals[order], vecs[:,order]
+        return vals[order], vecs[:, order]
 
     def _generateEllipse(self, x: np.ndarray,y: np.ndarray, persentage: float) -> FlareEllipce:
         cov = np.cov(x, y)
@@ -83,7 +83,7 @@ class ConfidenceEllipceEstimation:
         yct = xc * sin_angle + yc * cos_angle
 
         rad_cc = (xct**2/(flare_ellipce.width/2.)**2) + (yct**2/(flare_ellipce.height/2.)**2)
-        distance = np.sqrt( xc**2 + yc**2 )
+        distance = np.sqrt(xc**2 + yc**2)
 
         selection_rule = rad_cc<=1.0
         number_of_targets = len(rad_cc[selection_rule])
@@ -94,7 +94,7 @@ class ConfidenceEllipceEstimation:
 
         nearest_star_data = 0
         nearest_star_distance = []
-        if (number_of_targets>0):
+        if number_of_targets > 0:
             indxs = np.argwhere(selection_rule)
             print("Gmag:",  np.array(data_gaia["Gmag"])[indxs])
             print("GAIA ID:",  np.array(data_gaia["Source"])[indxs])

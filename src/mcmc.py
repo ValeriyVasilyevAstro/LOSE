@@ -59,6 +59,7 @@ class MCMCFitting:
                            value=np.mean(inp.flare_image[np.invert(np.isnan(inp.flare_image))]),
                            init_value=np.mean(inp.flare_image[np.invert(np.isnan(inp.flare_image))]),
                            err=np.std(inp.flare_image[np.invert(np.isnan(inp.flare_image))]))
+
         params = FittingParameters(flare_flux=flare_flux, flare_col=flare_col, flare_row=flare_row, offset=offset)
         flat_samples_0, ndim = self._runSampler(flare_image=inp.flare_image, tpf=inp.tpf, params=params,
                                                 n_steps=inp.n_steps, n_discard=inp.n_discard)
