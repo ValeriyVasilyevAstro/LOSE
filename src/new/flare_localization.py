@@ -4,6 +4,12 @@ import numpy as np
 
 class Constants:
     cadence: float = 30.0/60/24.0
+    number_of_cadences_in_one_hour_lc: int = 2
+
+
+class Parameters:
+    number_of_excluded_cadences_before_flare: int = 2
+    number_of_excluded_cadences_after_flare: int = 4
 
 
 class FlareTimeIsNotWithinTheTimeRangeInTheTargetPixelFile_Exception(Exception):
@@ -11,10 +17,11 @@ class FlareTimeIsNotWithinTheTimeRangeInTheTargetPixelFile_Exception(Exception):
 
 
 class FlareLocalization:
-    def __init__(self, flare_time: float, tpf: TargetPixelFile):
+    def __init__(self, flare_time: float, tpf: TargetPixelFile, window_length_hours: float = 16.5):
         self._check_that_flare_time_value_is_within_the_time_array_from_tpf(flare_time=flare_time,  time_array=tpf.time.value)
         self.flare_time = flare_time
         self.tpf = tpf
+        self.window_length_hours = window_length_hours
         self.tpf_image_at_flare_time = None
         self.flare_image: np.ndarray = None
 
@@ -30,21 +37,27 @@ class FlareLocalization:
         return index_flare
 
     def find_tpf_image_at_flare_time(self) -> "FlareLocalization":
-        index = self._find_image_index(flare_time=self.flare_time, time_array=self.tpf_time)
-        self.tpf_image_at_flare_time = self.tpf.flux.tpf_images[index]
+        index_flare = self._find_image_index(flare_time=self.flare_time, time_array=self.tpf.time.value)
+        self.tpf_image_at_flare_time = self.tpf.flux.value[index_flare]
         return self
 
     def get_flare_image(self, detrending_method: str = "polynom"):
         """detrend flare"""
         nx = self.tpf_image_at_flare_time.shape[0]
         ny = self.tpf_image_at_flare_time.shape[1]
-
+        index_flare = self._find_image_index(flare_time=self.flare_time, time_array=self.tpf.time.value)
+        window_length = int(self.window_length_hours * Constants.number_of_cadences_in_one_hour_lc)
+        indices_of_window_with_flare = np.linspace(index_flare - window_length,
+                                                          index_flare + window_length,
+                                                          int(self.window_length_hours)+1, dtype=int)
+        indices_of_window_with_exlcuded_flare = np.concatenate(
+            (np.linspace(index_flare - window_length,
+                         index_flare - Parameters.number_of_excluded_cadences_before_flare,
+                         window_length - 1, dtype=int),
+             np.linspace(index_flare + Parameters.number_of_excluded_cadences_after_flare,
+                         index_flare + window_length, window_length-3, dtype=int)), axis=0)
 
         return self.flare_image
-
-    def get_image_shape(self) -> [int, int]:
-
-
 
     def localize_flare(self):
         """ """
