@@ -64,10 +64,3 @@ class ProcessingFlareImageComputation:
             indx_max = np.argwhere(cadence_around_flare_witout_flare == len(time))[0]
             cadence_around_flare_witout_flare = cadence_around_flare_witout_flare[0:indx_max[0]]
         return
-
-    def _fitPolynom(self, x: np.ndarray, y: np.ndarray, order: int) -> Callable:
-        z = np.polyfit(x, y, order)
-        return np.poly1d(z)
-
-    def _computeStd(self, data_flux: np.ndarray, mean_flux: np.ndarray) -> np.ndarray:
-        return np.std(data_flux - mean_flux)
