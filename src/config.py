@@ -6,3 +6,6 @@ class Constants:
 class Parameters:
     number_of_excluded_cadences_before_flare: int = 2
     number_of_excluded_cadences_after_flare: int = 4
+
+    n_steps_default: int = 12000
+    n_discard_default: int = 8000

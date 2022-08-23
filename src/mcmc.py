@@ -98,8 +98,11 @@ class MCMCFitting:
         nwalkers, ndim = pos.shape
         prfmodel = tpf.get_prf_model()
         sampler = emcee.EnsembleSampler(nwalkers, ndim, self._computeLogProbability, args=(flare_image, prfmodel, params))
-        sampler.run_mcmc(pos, n_steps, progress=True)
-        return sampler.get_chain(discard=n_discard, flat=True), ndim
+        sampler.run_mcmc(pos, n_steps)
+
+        chain = sampler.chain[:, n_discard::, :]
+        shape = chain.shape
+        return chain.reshape(shape[0] * shape[1], shape[2]), ndim
 
     def _extractBestFittingParametersAndErrorsFromChain(self, flat_chain_samples: np.ndarray, ndim: int) \
             -> [np.ndarray, list, list, list]:
