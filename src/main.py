@@ -75,10 +75,10 @@ class Processing:
 
         image_with_flare: FlareImageComputation_Output = ProcessingFlareImageComputation().processing(
             inp=FlareImageComputation_Input(images=tpfs.target_pixel_data.flux.value,
-                                        time=tpfs.target_pixel_data.time.value,
-                                        cadences_before_and_after_the_flare=tpfs.cadence_around_flare_without_flare,
-                                        cadence_flare=tpfs.cadence_flare,
-                                        cadences=tpfs.cadences))
+                                            time=tpfs.target_pixel_data.time.value,
+                                            cadences_before_and_after_the_flare=tpfs.cadence_around_flare_without_flare,
+                                            cadence_flare=tpfs.cadence_flare,
+                                            cadences=tpfs.cadences))
 
         print("image_with_flare.all_images:", image_with_flare.all_images.shape)
         print("tpfs.target_pixel_data.pipeline_mask:", tpfs.target_pixel_data.pipeline_mask,

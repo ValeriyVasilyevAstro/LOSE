@@ -22,6 +22,9 @@ class FlareImageComputation_Output:
     quiet_stellar_fluxes_within_window_with_flare: np.ndarray
     quiet_stellar_flux_flare_cadence: np.ndarray
     flare_image: np.ndarray
+    tpfs_within_window_with_flare: np.ndarray
+    time_within_window_with_flare: np.ndarray
+
 
 
 class FlareImageComputation:
@@ -29,16 +32,23 @@ class FlareImageComputation:
         window_length = int(inp.window_length_hours * Constants.number_of_cadences_in_one_hour_lc)
         index_flare = self._find_image_index(flare_time=inp.flare_time, time_array=inp.tpf.time.value)
         tpf_image_at_flare_time = inp.tpf.flux.value[index_flare]
-        flare_image, quiet_stellar_flux_at_flare_cadence, quiet_stellar_fluxes_within_window_with_flare = \
-            self._compute_flare_image(index_flare=index_flare, images=inp.tpf.flux.value, time=inp.tpf.time.value, window_length=window_length)
+        flare_image, quiet_stellar_flux_at_flare_cadence, quiet_stellar_fluxes_within_window_with_flare, \
+            tpfs_within_window_with_flare, time_within_window_with_flare = self._compute_flare_image(index_flare=index_flare,
+                                                                      images=inp.tpf.flux.value,
+                                                                      time=inp.tpf.time.value,
+                                                                      window_length=window_length)
         quiet_stellar_flux_flare_cadence = quiet_stellar_flux_at_flare_cadence
-        return FlareImageComputation_Output(tpf_image_at_flare_time, quiet_stellar_fluxes_within_window_with_flare,
-                                            quiet_stellar_flux_flare_cadence, flare_image)
+        return FlareImageComputation_Output(tpf_image_at_flare_time,
+                                            quiet_stellar_fluxes_within_window_with_flare,
+                                            quiet_stellar_flux_flare_cadence,
+                                            flare_image,
+                                            tpfs_within_window_with_flare,
+                                            time_within_window_with_flare)
 
     def _find_image_index(self,  flare_time: float, time_array: np.ndarray) -> int:
         index_flare = np.squeeze(np.argmin(np.abs(time_array - flare_time)))
         if np.min(np.abs(time_array - flare_time)) != 0:
-            print(f"input flare_time {flare_time}  value is not presented in the time array "
+            print(f"WARNING: input flare_time {flare_time}  value is not presented in the time array "
                   f"from the target pixel file! Take index corresponding to the nearest value {time_array[index_flare]}")
         return index_flare
 
@@ -61,7 +71,10 @@ class FlareImageComputation:
         flare_image = self._remove_quite_stellar_flux_from_tpf(images[indices_within_window_with_flare],
                                                                        quiet_stellar_flux_at_flare_cadence)
         flare_image = flare_image + self._compute_offset(flare_image)
-        return flare_image, quiet_stellar_flux_at_flare_cadence, quiet_stellar_flux_within_window_with_flare
+        tpfs_within_window_with_flare = images[indices_within_window_with_flare]
+        time_within_window_with_flare = time[indices_within_window_with_flare]
+        return flare_image, quiet_stellar_flux_at_flare_cadence, quiet_stellar_flux_within_window_with_flare, \
+            tpfs_within_window_with_flare, time_within_window_with_flare
 
     def _remove_quite_stellar_flux_from_tpf(self, tpf_at_flare_cadence, quiet_stellar_flux_at_flare_cadence):
         return tpf_at_flare_cadence - quiet_stellar_flux_at_flare_cadence
