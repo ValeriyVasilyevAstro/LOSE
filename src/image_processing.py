@@ -68,8 +68,7 @@ class FlareImageComputation:
                                                                    order=3)
                     quiet_stellar_flux_within_window_with_flare[:, i, j] = polynom_quiet_stellar_flux(time[indices_within_window_with_flare])
                     quiet_stellar_flux_at_flare_cadence[i, j] = polynom_quiet_stellar_flux(time[index_flare])
-        flare_image = self._remove_quite_stellar_flux_from_tpf(images[indices_within_window_with_flare],
-                                                                       quiet_stellar_flux_at_flare_cadence)
+        flare_image = self._remove_quite_stellar_flux_from_tpf(images[index_flare], quiet_stellar_flux_at_flare_cadence)
         flare_image = flare_image + self._compute_offset(flare_image)
         tpfs_within_window_with_flare = images[indices_within_window_with_flare]
         time_within_window_with_flare = time[indices_within_window_with_flare]

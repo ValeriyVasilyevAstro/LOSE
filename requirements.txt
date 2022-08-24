@@ -5,3 +5,4 @@ pandas==1.4.3
 lightkurve==2.3.0
 emcee==1.2.0
 jupyter==1.0.0
+pygtc==0.4.1
