@@ -5,7 +5,7 @@ from src.config import Parameters
 from src.get_gaia_data import StarPositionsFromGAIA
 
 class FlareLocalization:
-    def __init__(self, flare_time: float, tpf: TargetPixelFile, window_length_hours: float = 16.5):
+    def __init__(self, flare_time: float, tpf: TargetPixelFile, window_length_hours: float = Parameters.window_length_hours):
         self.flare_time = flare_time
         self.tpf = tpf
         self.window_length_hours = window_length_hours

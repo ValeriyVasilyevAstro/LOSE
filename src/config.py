@@ -9,3 +9,7 @@ class Parameters:
 
     n_steps_default: int = 12000
     n_discard_default: int = 8000
+
+    window_length_hours: float = 16.5
+
+    order_of_the_fitted_polynomial: int = 3

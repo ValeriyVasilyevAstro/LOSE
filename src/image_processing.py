@@ -13,7 +13,7 @@ class FlareTimeIsNotWithinTheTimeRangeInTheTargetPixelFile_Exception(Exception):
 class FlareImageComputation_Input:
     tpf: TargetPixelFile
     flare_time: float
-    window_length_hours: float = 16.5
+    window_length_hours: float = Parameters.window_length_hours
 
 
 @dataclass
@@ -65,7 +65,7 @@ class FlareImageComputation:
                 if not np.isnan(images[indices_within_window_with_flare][0, i, j]):
                     polynom_quiet_stellar_flux = self._fit_polynom(x=time[indices_within_window_without_flare],
                                                                    y=images[indices_within_window_without_flare][:, i, j],
-                                                                   order=3)
+                                                                   order=Parameters.order_of_the_fitted_polynomial)
                     quiet_stellar_flux_within_window_with_flare[:, i, j] = polynom_quiet_stellar_flux(time[indices_within_window_with_flare])
                     quiet_stellar_flux_at_flare_cadence[i, j] = polynom_quiet_stellar_flux(time[index_flare])
         flare_image = self._remove_quite_stellar_flux_from_tpf(images[index_flare], quiet_stellar_flux_at_flare_cadence)

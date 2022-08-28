@@ -1,6 +1,12 @@
 # losfloimg
-LOSFLOIMG is Localisation Of Super-FLares On Images. 
-The algorithm based on the PSF-fitting of the images in order to localize super-flares. 
+LOSFLOIMG is Localisation Of Super-FLares On Images.
+Photometric surveys provide light curves and series of images 
+for tens of thousands of stars. Light curve data products
+are produced by applying photometric masks to the series of images.
+Often, an image with the target star contains faint contaminant stars.
+Thus, a flare observed on the light curve of the target star can be 
+caused by a background star. Presented here algorithm is developed to 
+localize position of the flare applying the PSF-fitting.
 
 
 # Attribution
