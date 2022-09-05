@@ -1,5 +1,5 @@
 # losfloimg
-LOSFLOIMG is Localisation Of Super-FLares On Images.
+LOSFLIMG is Localisation Of Super-FLares on Images.
 Photometric surveys provide light curves and series of images 
 for tens of thousands of stars. Light curve data products
 are produced by applying photometric masks to the series of images.
