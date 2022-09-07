@@ -1,4 +1,4 @@
-# losfloimg
+# LOSE
 LOSE is Localisation Of Super-flare Event. 
 Photometric surveys provide light curves and series of images 
 for tens of thousands of stars. Light curve data products
