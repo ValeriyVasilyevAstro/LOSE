@@ -13,5 +13,5 @@ localize position of the flare applying the PSF-fitting.
 If you find this code useful in your research, please cite V. Vasilyev, 
 T. Reinhold, A. Shapiro, N. Krivova, I. Usoskin, B. Montet, S. Solanki, 
 L.Gizon "Superflares on solar-like stars: A new method for identifying the true 
-flare sources in photometric surveys", submitted to  Astronomy and Astrophysics  (2022). 
+flare sources in photometric surveys", submitted to  Astronomy and Astrophysics  (2022) (https://arxiv.org/abs/2209.13903)
 The BibTeX entry for the paper is: (comming soon)
