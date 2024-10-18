@@ -1,0 +1,9 @@
+cff-version: 1.0.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: Vasilyev
+  given-names: Valeriy
+orcid: https://orcid.org/0009-0009-3020-3435
+title: Flare detection Algorithm
+version: v1.0.1
+date-released: 2024-10-18
